@@ -1,24 +1,45 @@
+#include <Adafruit_GFX.h>   // Core graphics library
+#include <RGBmatrixPanel.h>
+
+#define CLK 11  // MUST be on PORTB! (Use pin 11 on Mega)
+#define OE  9
+#define LAT 10
+#define A   A0
+#define B   A1
+#define C   A2
+#define D   A3
+// If your matrix has the DOUBLE HEADER input, use:
+//#define CLK 8  // MUST be on PORTB! (Use pin 11 on Mega)
+//#define LAT 9
+//#define OE  10
+//#define A   A3
+//#define B   A2
+//#define C   A1
+//#define D   A0
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
+
 int soundPin = A5;
 int ledPin = 12;
 int sensorValue = 0;
- 
+
+ // THE ADC ON THE ARDUINO IS 10 BITS
 void setup () 
 {
-  Serial.begin (9600);
-  pinMode (ledPin, OUTPUT);
+  Serial.begin(9600);
+  matrix.begin();
 }
  
 void loop () 
 {
   sensorValue = analogRead (soundPin);
   //if sensor goes above max light led (could be buzzer)
-  if(sensorValue > 75)
+  if(sensorValue > 100)
   {
+    matrix.fillScreen(matrix.Color333(sensorValue % 7, sensorValue % 7, sensorValue % 7);
+    delay(1000);
     Serial.println (sensorValue, DEC);
-    digitalWrite (ledPin, HIGH);
     delay (50);
   }
   //switch off LED
-  digitalWrite (ledPin, LOW);
   delay (50);
 }
