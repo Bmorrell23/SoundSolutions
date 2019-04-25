@@ -35,82 +35,105 @@ int sensorValue = 0;
 RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
 
 void setup() {
-
+  Serial.begin(9600);
   matrix.begin();
+}
 
-  // draw a pixel in solid white
-  matrix.drawPixel(0, 0, matrix.Color333(7, 7, 7));
-  delay(500);
-
-  // fix the screen with green
-  matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 7, 0));
-  delay(500);
-
-  // draw a box in yellow
-  matrix.drawRect(0, 0, 32, 32, matrix.Color333(7, 7, 0));
-  delay(500);
-
-  // draw an 'X' in red
-  matrix.drawLine(0, 0, 31, 31, matrix.Color333(7, 0, 0));
-  matrix.drawLine(31, 0, 0, 31, matrix.Color333(7, 0, 0));
-  delay(500);
-
-  // draw a blue circle
-  matrix.drawCircle(10, 10, 10, matrix.Color333(0, 0, 7));
-  delay(500);
-
-  // fill a violet circle
-  matrix.fillCircle(21, 21, 10, matrix.Color333(7, 0, 7));
-  delay(500);
-
-  // fill the screen with 'black'
+void runGameStart() {
   matrix.fillScreen(matrix.Color333(0, 0, 0));
-
-  // draw some text!
-  matrix.setCursor(1, 0);    // start at top left, with one pixel of spacing
-  matrix.setTextSize(1);     // size 1 == 8 pixels high
-  matrix.setTextWrap(false); // Don't wrap at end of line - will do ourselves
-
-  matrix.setTextColor(matrix.Color333(7,7,7));
-  matrix.println(" Ada");
-  matrix.println("fruit");
-
-  // print each letter with a rainbow color
-  matrix.setTextColor(matrix.Color333(7,0,0));
+  matrix.setCursor(11, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
+  matrix.print('5');
+  delay(250);
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  delay(250);
+  matrix.begin();
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  matrix.setCursor(11, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
+  matrix.print('4');
+  delay(250);
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  delay(250);
+  matrix.begin();
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  matrix.setCursor(11, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
   matrix.print('3');
-  matrix.setTextColor(matrix.Color333(7,4,0));
+  delay(250);
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  delay(250);
+  matrix.begin();
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  matrix.setCursor(11, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
   matrix.print('2');
-  matrix.setTextColor(matrix.Color333(7,7,0));
-  matrix.print('x');
-  matrix.setTextColor(matrix.Color333(4,7,0));
-  matrix.print('3');
-  matrix.setTextColor(matrix.Color333(0,7,0));
-  matrix.println('2');
-
-  matrix.setTextColor(matrix.Color333(0,7,7));
-  matrix.print('*');
-  matrix.setTextColor(matrix.Color333(0,4,7));
-  matrix.print('R');
-  matrix.setTextColor(matrix.Color333(0,0,7));
-  matrix.print('G');
-  matrix.setTextColor(matrix.Color333(4,0,7));
-  matrix.print("B");
-  matrix.setTextColor(matrix.Color333(7,0,4));
-  matrix.print("*");
-
-  // whew!
+  delay(250);
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  delay(250);
+  matrix.begin();
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  matrix.setCursor(11, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
+  matrix.print('1');
+  delay(250);
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  delay(250);
+  matrix.begin();
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  matrix.setCursor(1, 9);    // start at top left, with one pixel of spacing
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.Color333(7, 7, 7));
+  matrix.println("Go!");
+  matrix.begin();
+  matrix.matrix.fillScreen(matrix.Color333(0, 0, 0));
 }
 
 void loop() {
+
+  runGameStart();
+    int maxValue = 0;
+    for (int i = 0; i < 15; i++) {
       sensorValue = analogRead (soundPin);
-  //if sensor goes above max light led (could be buzzer)
-  if(sensorValue > 75)
-  {
-    Serial.println (sensorValue, DEC);
-    digitalWrite (ledPin, HIGH);
-    delay (50);
-  }
-  //switch off LED
-  digitalWrite (ledPin, LOW);
-  delay (50);
+      if (sensorValue > maxValue) {
+        Serial.println(sensorValue);
+        maxValue = sensorValue;
+      }
+      delay(250);
+    }
+    if (maxValue > 1000) {
+      Serial.println("You scored over 1000!");
+      matrix.setTextColor(matrix.Color333(7, 0, 0));
+      matrix.print('3');
+      matrix.setTextColor(matrix.Color333(7, 4, 0));
+      matrix.print('2');
+      matrix.setTextColor(matrix.Color333(7, 7, 0));
+      matrix.print('x');
+      matrix.setTextColor(matrix.Color333(4, 7, 0));
+      matrix.print('3');
+      matrix.setTextColor(matrix.Color333(0, 7, 0));
+      matrix.println('2');
+    }
+    if (maxValue > 500) {
+      Serial.println("You scored over 500!");
+    }
+    if (maxValue > 100) {
+      Serial.println("You scored over 100!");
+    }
+    else {
+      Serial.println("Try playing again!");
+    }
+    //  digitalWrite (ledPin, LOW);
+    delay (5000);
 }
